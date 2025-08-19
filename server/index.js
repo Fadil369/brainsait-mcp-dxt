@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * BrainSAIT Healthcare MCP Server
- * HIPAA/NPHIES compliant MCP extension with FHIR R4 support
+ * BrainSAIT Healthcare MCP Server with Web Connector Support
+ * HIPAA/NPHIES compliant MCP extension with FHIR R4 support and remote healthcare system integration
  *
  * @author BrainSAIT Development Team
- * @version 1.0.0
+ * @version 2.0.0
  * @license MIT
  */
 
@@ -21,6 +21,8 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import crypto from 'crypto';
 import axios from 'axios';
+import WebConnectorManager from './lib/WebConnectorManager.js';
+import HealthcareConnectorTemplates from './lib/HealthcareConnectorTemplates.js';
 
 // BRAINSAIT: Healthcare compliance and audit logging
 class ComplianceError extends Error {
@@ -63,7 +65,11 @@ class FHIRValidator {
     const validSystems = [
       'http://hl7.org/fhir/sid/icd-10',
       'http://www.ama-assn.org/go/cpt',
-      'http://loinc.org'
+      'http://loinc.org',
+      'ICD10',
+      'ICD-10',
+      'CPT',
+      'LOINC'
     ];
 
     if (!validSystems.includes(system)) {
@@ -204,6 +210,18 @@ class BrainSAITMCPServer {
     this.defaultLanguage = process.env.DEFAULT_LANGUAGE || 'ar';
     this.complianceLevel = process.env.COMPLIANCE_LEVEL || 'HIPAA,NPHIES';
 
+    // ENHANCED: Initialize Web Connector Manager for remote healthcare systems
+    this.webConnectorManager = new WebConnectorManager({
+      encryptionKey: process.env.ENCRYPTION_KEY,
+      complianceLevel: this.complianceLevel,
+      auditLogger: this.auditLogger,
+      timeout: parseInt(process.env.CONNECTOR_TIMEOUT) || 30000,
+      retryAttempts: parseInt(process.env.CONNECTOR_RETRY_ATTEMPTS) || 3
+    });
+
+    // ENHANCED: Setup web connector event handlers
+    this.setupConnectorEventHandlers();
+
     this.setupTools();
     this.setupPrompts();
     this.setupErrorHandling();
@@ -321,6 +339,84 @@ class BrainSAITMCPServer {
             },
             required: ['userId', 'requestedAction', 'resourceType', 'adminUserId']
           }
+        },
+        {
+          name: 'web_connector_register',
+          description: 'Register a new healthcare web connector for remote system integration',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              connectorId: { type: 'string', description: 'Unique identifier for the connector' },
+              templateType: { type: 'string', description: 'Connector template type (ehr_system, fhir_server, audit_system, etc.)' },
+              endpoint: { type: 'string', description: 'Remote system endpoint URL' },
+              authentication: { type: 'object', description: 'Authentication configuration' },
+              customConfig: { type: 'object', description: 'Additional custom configuration' },
+              userId: { type: 'string', description: 'User ID for audit logging' }
+            },
+            required: ['connectorId', 'templateType', 'endpoint', 'authentication', 'userId']
+          }
+        },
+        {
+          name: 'web_connector_execute',
+          description: 'Execute a remote call through a registered healthcare connector',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              connectorId: { type: 'string', description: 'Connector identifier' },
+              method: { type: 'string', description: 'Remote method to execute' },
+              params: { type: 'object', description: 'Method parameters' },
+              options: { type: 'object', description: 'Execution options' },
+              userId: { type: 'string', description: 'User ID for audit logging' }
+            },
+            required: ['connectorId', 'method', 'userId']
+          }
+        },
+        {
+          name: 'web_connector_list',
+          description: 'List all registered healthcare connectors and their status',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              userId: { type: 'string', description: 'User ID for audit logging' }
+            },
+            required: ['userId']
+          }
+        },
+        {
+          name: 'web_connector_status',
+          description: 'Get status and health information for a specific healthcare connector',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              connectorId: { type: 'string', description: 'Connector identifier' },
+              userId: { type: 'string', description: 'User ID for audit logging' }
+            },
+            required: ['connectorId', 'userId']
+          }
+        },
+        {
+          name: 'web_connector_unregister',
+          description: 'Unregister and disconnect a healthcare connector',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              connectorId: { type: 'string', description: 'Connector identifier' },
+              userId: { type: 'string', description: 'User ID for audit logging' }
+            },
+            required: ['connectorId', 'userId']
+          }
+        },
+        {
+          name: 'web_connector_templates',
+          description: 'Get available healthcare connector templates and their configurations',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              templateType: { type: 'string', description: 'Specific template type to get (optional)' },
+              userId: { type: 'string', description: 'User ID for audit logging' }
+            },
+            required: ['userId']
+          }
         }
       ]
     }));
@@ -362,6 +458,24 @@ class BrainSAITMCPServer {
 
           case 'role_based_access_control':
             return await this.roleBasedAccessControl(args);
+
+          case 'web_connector_register':
+            return await this.webConnectorRegister(args);
+
+          case 'web_connector_execute':
+            return await this.webConnectorExecute(args);
+
+          case 'web_connector_list':
+            return await this.webConnectorList(args);
+
+          case 'web_connector_status':
+            return await this.webConnectorStatus(args);
+
+          case 'web_connector_unregister':
+            return await this.webConnectorUnregister(args);
+
+          case 'web_connector_templates':
+            return await this.webConnectorTemplates(args);
 
           default:
             throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${name}`);
@@ -674,6 +788,248 @@ class BrainSAITMCPServer {
     };
   }
 
+  // ENHANCED: Web connector event handlers
+  setupConnectorEventHandlers () {
+    this.webConnectorManager.on('connectorRegistered', async ({ id, connector }) => {
+      await this.auditLogger.logAccess(
+        'system',
+        'WEB_CONNECTOR_REGISTERED',
+        'WEB_CONNECTOR',
+        id,
+        'SUCCESS'
+      );
+    });
+
+    this.webConnectorManager.on('connectorUnregistered', async ({ id }) => {
+      await this.auditLogger.logAccess(
+        'system',
+        'WEB_CONNECTOR_UNREGISTERED',
+        'WEB_CONNECTOR',
+        id,
+        'SUCCESS'
+      );
+    });
+
+    this.webConnectorManager.on('connectorUnhealthy', async ({ id, status }) => {
+      await this.auditLogger.logAccess(
+        'system',
+        'WEB_CONNECTOR_UNHEALTHY',
+        'WEB_CONNECTOR',
+        id,
+        'WARNING',
+        JSON.stringify(status)
+      );
+    });
+
+    this.webConnectorManager.on('connectorError', async ({ id, error }) => {
+      await this.auditLogger.logAccess(
+        'system',
+        'WEB_CONNECTOR_ERROR',
+        'WEB_CONNECTOR',
+        id,
+        'FAILURE',
+        error.message
+      );
+    });
+  }
+
+  // ENHANCED: Web connector registration
+  async webConnectorRegister (args) {
+    const { connectorId, templateType, endpoint, authentication, customConfig = {}, userId } = args;
+
+    try {
+      // Create connector configuration from template
+      const template = HealthcareConnectorTemplates.createTemplate(templateType, {
+        endpoint,
+        authentication,
+        ...customConfig
+      });
+
+      // Validate template
+      HealthcareConnectorTemplates.validateTemplate(template);
+
+      // Register connector
+      const connector = await this.webConnectorManager.registerConnector(connectorId, template);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              success: true,
+              connectorId,
+              templateType,
+              status: 'registered',
+              message: BilingualContent.translate(
+                `Healthcare connector ${connectorId} registered successfully`,
+                this.defaultLanguage
+              ),
+              configuration: template,
+              registeredAt: new Date().toISOString()
+            }, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      throw new HealthcareAPIError(`Connector registration failed: ${error.message}`);
+    }
+  }
+
+  // ENHANCED: Web connector execution
+  async webConnectorExecute (args) {
+    const { connectorId, method, params = {}, options = {}, userId } = args;
+
+    try {
+      // Execute remote call through connector
+      const result = await this.webConnectorManager.executeRemoteCall(
+        connectorId,
+        method,
+        params,
+        {
+          ...options,
+          userId,
+          complianceLevel: this.complianceLevel
+        }
+      );
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              success: true,
+              connectorId,
+              method,
+              result,
+              executedAt: new Date().toISOString(),
+              complianceLevel: this.complianceLevel
+            }, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      throw new HealthcareAPIError(`Remote call execution failed: ${error.message}`);
+    }
+  }
+
+  // ENHANCED: List web connectors
+  async webConnectorList (args) {
+    const { userId } = args;
+
+    try {
+      const connectors = await this.webConnectorManager.listConnectors();
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              connectors,
+              totalCount: connectors.length,
+              healthyCount: connectors.filter(c => c.healthStatus === 'healthy').length,
+              unhealthyCount: connectors.filter(c => c.healthStatus !== 'healthy').length,
+              retrievedAt: new Date().toISOString(),
+              complianceLevel: this.complianceLevel
+            }, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      throw new HealthcareAPIError(`Failed to list connectors: ${error.message}`);
+    }
+  }
+
+  // ENHANCED: Get web connector status
+  async webConnectorStatus (args) {
+    const { connectorId, userId } = args;
+
+    try {
+      const status = await this.webConnectorManager.getConnectorStatus(connectorId);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              connectorStatus: status,
+              retrievedAt: new Date().toISOString(),
+              complianceLevel: this.complianceLevel
+            }, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      throw new HealthcareAPIError(`Failed to get connector status: ${error.message}`);
+    }
+  }
+
+  // ENHANCED: Unregister web connector
+  async webConnectorUnregister (args) {
+    const { connectorId, userId } = args;
+
+    try {
+      await this.webConnectorManager.unregisterConnector(connectorId);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              success: true,
+              connectorId,
+              status: 'unregistered',
+              message: BilingualContent.translate(
+                `Healthcare connector ${connectorId} unregistered successfully`,
+                this.defaultLanguage
+              ),
+              unregisteredAt: new Date().toISOString()
+            }, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      throw new HealthcareAPIError(`Connector unregistration failed: ${error.message}`);
+    }
+  }
+
+  // ENHANCED: Get web connector templates
+  async webConnectorTemplates (args) {
+    const { templateType, userId } = args;
+
+    try {
+      let templates;
+
+      if (templateType) {
+        // Get specific template
+        templates = {
+          templateType,
+          configuration: HealthcareConnectorTemplates.createTemplate(templateType)
+        };
+      } else {
+        // Get all available templates
+        templates = {
+          availableTemplates: HealthcareConnectorTemplates.getAvailableTemplates(),
+          totalCount: HealthcareConnectorTemplates.getAvailableTemplates().length
+        };
+      }
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              templates,
+              retrievedAt: new Date().toISOString(),
+              complianceLevel: this.complianceLevel
+            }, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      throw new HealthcareAPIError(`Failed to get connector templates: ${error.message}`);
+    }
+  }
+
   setupPrompts () {
     // MEDICAL: Healthcare-specific prompts
     this.server.setRequestHandler(ListPromptsRequestSchema, async () => ({
@@ -704,6 +1060,26 @@ class BrainSAITMCPServer {
             { name: 'compliance_framework', description: 'Compliance framework (HIPAA/NPHIES)', required: true },
             { name: 'language', description: 'Report language (ar/en)', required: false }
           ]
+        },
+        {
+          name: 'web_connector_integration',
+          description: 'Generate healthcare system integration plan using web connectors',
+          arguments: [
+            { name: 'system_types', description: 'Types of healthcare systems to integrate', required: true },
+            { name: 'integration_scope', description: 'Scope of integration (data sharing, workflows, etc.)', required: true },
+            { name: 'compliance_requirements', description: 'Compliance requirements (HIPAA/NPHIES)', required: true },
+            { name: 'language', description: 'Plan language (ar/en)', required: false }
+          ]
+        },
+        {
+          name: 'remote_healthcare_workflow',
+          description: 'Design workflows for remote healthcare system interactions',
+          arguments: [
+            { name: 'workflow_type', description: 'Type of healthcare workflow', required: true },
+            { name: 'involved_systems', description: 'Healthcare systems involved in workflow', required: true },
+            { name: 'data_flows', description: 'Description of data flows between systems', required: true },
+            { name: 'language', description: 'Workflow language (ar/en)', required: false }
+          ]
         }
       ]
     }));
@@ -716,7 +1092,11 @@ class BrainSAITMCPServer {
 
         fhir_resource_generator: `Generate a FHIR R4 ${args?.resource_type} resource from the following clinical data: ${args?.clinical_data}. Ensure ${args?.compliance_level || this.complianceLevel} compliance level with proper validation and audit trail.`,
 
-        compliance_report: `Generate a comprehensive compliance report for ${args?.audit_period} following ${args?.compliance_framework} standards in ${args?.language || this.defaultLanguage}. Include audit trails, access logs, and security metrics.`
+        compliance_report: `Generate a comprehensive compliance report for ${args?.audit_period} following ${args?.compliance_framework} standards in ${args?.language || this.defaultLanguage}. Include audit trails, access logs, and security metrics.`,
+
+        web_connector_integration: `Create a healthcare system integration plan for ${args?.system_types} with ${args?.integration_scope} scope. Ensure ${args?.compliance_requirements} compliance and include web connector configurations, security requirements, and implementation steps in ${args?.language || this.defaultLanguage}.`,
+
+        remote_healthcare_workflow: `Design a ${args?.workflow_type} workflow involving ${args?.involved_systems} healthcare systems. Define ${args?.data_flows} and include security protocols, error handling, and compliance measures in ${args?.language || this.defaultLanguage}.`
       };
 
       const prompt = prompts[name];
@@ -768,9 +1148,12 @@ class BrainSAITMCPServer {
   async run () {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error('BrainSAIT Healthcare MCP server running on stdio');
+    console.error('BrainSAIT Healthcare MCP server with Web Connector support running on stdio');
     console.error(`Compliance Level: ${this.complianceLevel}`);
     console.error(`Default Language: ${this.defaultLanguage}`);
+    console.error('Web Connector Manager: Enabled');
+    console.error(`Healthcare Templates: ${HealthcareConnectorTemplates.getAvailableTemplates().length} available`);
+    console.error('Enhanced Features: Remote healthcare system integration, EHR/FHIR/Audit connectors');
   }
 }
 

@@ -1,0 +1,17 @@
+# Cloudflare Pages Redirects
+
+# API routes - redirect to backend
+/api/* https://api.brainsait.com/:splat 200
+
+# Docs redirect
+/docs/* https://docs.brainsait.com/:splat 302
+
+# Support redirect
+/support/* https://support.brainsait.com/:splat 302
+
+# Legacy URLs
+/landing/* / 301
+/home/* / 301
+
+# SPA fallback
+/* /index.html 200

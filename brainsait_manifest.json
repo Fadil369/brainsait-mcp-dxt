@@ -2,9 +2,9 @@
   "dxt_version": "0.1",
   "name": "brainsait-healthcare-mcp",
   "display_name": "BrainSAIT Healthcare MCP Extension",
-  "version": "1.0.0",
-  "description": "HIPAA/NPHIES compliant healthcare MCP extension with FHIR R4 support, clinical decision support, and bilingual Arabic/English capabilities",
-  "long_description": "Comprehensive healthcare MCP extension for BrainSAIT platform providing FHIR R4 resource management, clinical terminology validation (ICD-10, CPT, LOINC), audit logging, and bilingual Arabic/English support. Designed for Saudi healthcare interoperability with NPHIES compliance.",
+  "version": "2.0.0",
+  "description": "Enhanced HIPAA/NPHIES compliant healthcare MCP extension with FHIR R4 support, web connector integration, clinical decision support, and bilingual Arabic/English capabilities",
+  "long_description": "Comprehensive healthcare MCP extension for BrainSAIT platform providing FHIR R4 resource management, web connector integration for healthcare systems, clinical terminology validation (ICD-10, CPT, LOINC), audit logging, and bilingual Arabic/English support. Features remote healthcare system connectivity (EHR, FHIR, Audit, LIS, RIS) with full HIPAA/NPHIES compliance.",
   "author": {
     "name": "BrainSAIT Development Team",
     "email": "dev@brainsait.com",
@@ -72,6 +72,30 @@
     {
       "name": "role_based_access_control",
       "description": "Validate user permissions and roles for healthcare data access"
+    },
+    {
+      "name": "web_connector_register",
+      "description": "Register and configure healthcare system web connectors (EHR, FHIR, Audit systems)"
+    },
+    {
+      "name": "web_connector_execute",
+      "description": "Execute operations on connected healthcare systems with HIPAA compliance"
+    },
+    {
+      "name": "web_connector_list",
+      "description": "List all registered healthcare web connectors with status information"
+    },
+    {
+      "name": "web_connector_status",
+      "description": "Get detailed status and health information for healthcare connectors"
+    },
+    {
+      "name": "web_connector_unregister",
+      "description": "Safely remove healthcare web connectors with audit trail"
+    },
+    {
+      "name": "web_connector_templates",
+      "description": "Access pre-built healthcare system connector templates (EHR, FHIR, LIS, RIS)"
     }
   ],
   "prompts": [
@@ -96,7 +120,7 @@
   ],
   "tools_generated": true,
   "prompts_generated": true,
-  "keywords": ["healthcare", "fhir", "hipaa", "nphies", "clinical", "bilingual", "arabic", "compliance", "audit"],
+  "keywords": ["healthcare", "fhir", "hipaa", "nphies", "clinical", "bilingual", "arabic", "compliance", "audit", "web-connectors", "remote-mcp", "ehr-integration"],
   "license": "MIT",
   "compatibility": {
     "claude_desktop": ">=1.0.0",

@@ -22,7 +22,13 @@ A comprehensive **HIPAA/NPHIES compliant** Model Context Protocol (MCP) extensio
 - **Clinical Decision Support**: AI-powered clinical guidance and recommendations
 - **PHI Encryption**: AES-256-GCM encryption for protected health information
 
-### 🌐 Internationalization
+### 🌐 **NEW: Web Connector Integration**
+- **Remote Healthcare Systems**: EHR, FHIR servers, Audit systems connectivity
+- **Healthcare Templates**: Pre-built connectors (LIS, RIS, PIS, HIE)
+- **Compliance Validation**: All remote connections maintain HIPAA/NPHIES compliance
+- **Secure Communication**: Encrypted endpoints with audit trails
+
+### 🌍 Internationalization
 - **Bilingual Support**: Arabic/English medical content translation
 - **Cultural Adaptation**: Saudi healthcare market requirements
 - **Clinical Terminology Translation**: Medical terms in both languages
@@ -129,8 +135,9 @@ NPHIES_PROVIDER_ID=your-provider-id
 
 ## 🧰 Available Tools
 
-The extension provides 8 specialized healthcare tools:
+The extension provides **14 specialized healthcare tools** including **6 new web connector tools** for remote healthcare system integration:
 
+### 🏥 Core Healthcare Tools (8)
 | Tool | Description | Use Case |
 |------|-------------|----------|
 | `validate_fhir_resource` | Validate FHIR R4 resources | Resource compliance checking |
@@ -141,6 +148,16 @@ The extension provides 8 specialized healthcare tools:
 | `bilingual_content_translate` | Medical translation | Arabic/English content |
 | `phi_encryption_handler` | PHI data encryption | Data protection |
 | `role_based_access_control` | Permission validation | Access management |
+
+### 🌐 **NEW: Web Connector Tools (6)**
+| Tool | Description | Use Case |
+|------|-------------|----------|
+| `web_connector_register` | Register healthcare system connectors | EHR, FHIR, Audit system setup |
+| `web_connector_execute` | Execute remote healthcare operations | Cross-system data exchange |
+| `web_connector_list` | List registered connectors | System inventory management |
+| `web_connector_status` | Get connector health information | System monitoring |
+| `web_connector_unregister` | Remove connectors safely | System decommissioning |
+| `web_connector_templates` | Access healthcare templates | EHR, FHIR, LIS, RIS, PIS, HIE |
 
 ## 🏗️ Development
 

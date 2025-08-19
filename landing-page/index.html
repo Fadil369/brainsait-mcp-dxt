@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/brainsait-favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>BrainSAIT Healthcare MCP Extension - Enterprise Web Connectors</title>
+    <meta name="description" content="HIPAA/NPHIES compliant healthcare MCP extension with advanced web connectors, FHIR R4 support, and enterprise-grade security. Start your free trial today." />
+    <meta name="keywords" content="healthcare MCP, web connectors, HIPAA compliance, NPHIES, FHIR R4, healthcare integration, Claude MCP, BrainSAIT" />
+    <meta name="author" content="BrainSAIT Development Team" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mcp.brainsait.com/" />
+    <meta property="og:title" content="BrainSAIT Healthcare MCP Extension - Enterprise Web Connectors" />
+    <meta property="og:description" content="HIPAA/NPHIES compliant healthcare MCP extension with advanced web connectors, FHIR R4 support, and enterprise-grade security." />
+    <meta property="og:image" content="https://mcp.brainsait.com/og-image.jpg" />
+    <meta property="og:site_name" content="BrainSAIT Healthcare MCP" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://mcp.brainsait.com/" />
+    <meta property="twitter:title" content="BrainSAIT Healthcare MCP Extension - Enterprise Web Connectors" />
+    <meta property="twitter:description" content="HIPAA/NPHIES compliant healthcare MCP extension with advanced web connectors, FHIR R4 support, and enterprise-grade security." />
+    <meta property="twitter:image" content="https://mcp.brainsait.com/og-image.jpg" />
+    
+    <!-- Additional Meta Tags -->
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="distribution" content="global" />
+    <meta name="rating" content="general" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://mcp.brainsait.com/" />
+    
+    <!-- Preconnect to External Domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#7c3aed" />
+    <meta name="msapplication-TileColor" content="#7c3aed" />
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "BrainSAIT Healthcare MCP Extension",
+      "description": "HIPAA/NPHIES compliant healthcare MCP extension with advanced web connectors and FHIR R4 support",
+      "url": "https://mcp.brainsait.com",
+      "applicationCategory": "HealthcareApplication",
+      "operatingSystem": "Cross-platform",
+      "offers": {
+        "@type": "Offer",
+        "price": "49",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2025-12-31"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BrainSAIT",
+        "url": "https://brainsait.com"
+      },
+      "featureList": [
+        "HIPAA/NPHIES Compliance",
+        "Web Connectors",
+        "FHIR R4 Support",
+        "Enterprise Security",
+        "Healthcare Integration"
+      ]
+    }
+    </script>
+    
+    <!-- Critical CSS Inline (for performance) -->
+    <style>
+      /* Critical above-the-fold styles */
+      body {
+        margin: 0;
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: #000000;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
+      
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #000000 0%, #1e1b4b 50%, #7c3aed 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid #7c3aed;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- Main App -->
+    <div id="root"></div>
+    
+    <!-- Loading Script -->
+    <script>
+      // Remove loading screen once page is loaded
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.classList.add('fade-out');
+            setTimeout(() => {
+              loadingScreen.remove();
+            }, 500);
+          }
+        }, 1000); // Show loading for at least 1 second
+      });
+      
+      // Smooth scroll polyfill for older browsers
+      if (!('scrollBehavior' in document.documentElement.style)) {
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js';
+        document.head.appendChild(script);
+      }
+    </script>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

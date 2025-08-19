@@ -1,0 +1,31 @@
+name = "brainsait-mcp-landing"
+compatibility_date = "2024-01-01"
+
+[env.production]
+routes = [
+  "mcp.brainsait.com/*",
+  "www.mcp.brainsait.com/*"
+]
+
+[env.staging]
+routes = [
+  "mcp-staging.brainsait.com/*"
+]
+
+# Pages configuration
+pages_build_output_dir = "dist"
+
+[[env.production.vars]]
+ENVIRONMENT = "production"
+
+[[env.staging.vars]]
+ENVIRONMENT = "staging"
+
+# Custom headers for security
+[[headers]]
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "camera=(), microphone=(), geolocation=()"
