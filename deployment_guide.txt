@@ -1,0 +1,451 @@
+# BrainSAIT Healthcare MCP Extension - Deployment Guide
+
+## Overview
+
+This guide provides step-by-step instructions for building, testing, and deploying the BrainSAIT Healthcare MCP Extension using the DXT (Desktop Extension) format.
+
+## Prerequisites
+
+### System Requirements
+- **Node.js**: >= 18.0.0
+- **Python**: >= 3.9 (for FHIR validation libraries)
+- **npm**: Latest version
+- **Git**: For version control
+
+### Required Tools
+```bash
+# Install DXT CLI globally
+npm install -g @anthropic-ai/dxt
+
+# Install development dependencies
+npm install -g eslint jest
+```
+
+## Project Structure
+
+```
+brainsait-healthcare-mcp/
+├── manifest.json                 # DXT manifest configuration
+├── package.json                  # Node.js dependencies
+├── server/
+│   ├── index.js                 # Main MCP server implementation
+│   └── lib/                     # Additional libraries
+├── tests/
+│   ├── unit/                    # Unit tests
+│   ├── integration/             # Integration tests
+│   ├── compliance/              # HIPAA/NPHIES compliance tests
+│   └── e2e/                     # End-to-end tests
+├── assets/
+│   ├── icons/                   # Extension icons
+│   └── screenshots/             # Documentation screenshots
+├── docs/                        # Documentation
+├── build.sh                     # Build automation script
+└── README.md                    # Project documentation
+```
+
+## Environment Configuration
+
+### Required Environment Variables
+
+Create a `.env` file in the project root:
+
+```bash
+# FHIR Server Configuration
+FHIR_BASE_URL=https://fhir.brainsait.com/r4
+FHIR_VERSION=4.0.1
+
+# Security and Encryption
+ENCRYPTION_KEY=your-aes-256-encryption-key-here
+PHI_ENCRYPTION_ALGORITHM=aes-256-gcm
+
+# Audit and Compliance
+AUDIT_LOG_ENDPOINT=https://audit.brainsait.com/api/v1/logs
+AUDIT_TOKEN=your-audit-service-token
+AUDIT_RETENTION_DAYS=2555
+
+# NPHIES Integration
+NPHIES_ENDPOINT=https://nphies.sa.gov/api/v1
+NPHIES_CLIENT_ID=your-nphies-client-id
+NPHIES_CLIENT_SECRET=your-nphies-client-secret
+
+# Localization
+DEFAULT_LANGUAGE=ar
+SUPPORTED_LANGUAGES=ar,en
+TIMEZONE=Asia/Riyadh
+
+# Compliance Levels
+COMPLIANCE_LEVEL=HIPAA,NPHIES
+HIPAA_COVERED_ENTITY=true
+NPHIES_PROVIDER_ID=your-provider-id
+
+# Performance and Limits
+MAX_CONCURRENT_REQUESTS=100
+REQUEST_TIMEOUT_MS=30000
+MAX_AUDIT_BATCH_SIZE=1000
+
+# Development/Production
+NODE_ENV=production
+LOG_LEVEL=info
+DEBUG_MODE=false
+```
+
+### Development Environment Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/brainsait/healthcare-mcp-extension.git
+cd brainsait-healthcare-mcp-extension
+
+# Install dependencies
+npm install
+
+# Copy environment template
+cp .env.example .env
+
+# Edit environment variables
+nano .env
+
+# Initialize DXT configuration
+npm run dxt:init
+
+# Run development server
+npm run dev
+```
+
+## Build Process
+
+### Automated Build
+
+Use the provided build script for complete automation:
+
+```bash
+# Make build script executable
+chmod +x build.sh
+
+# Run full build process
+./build.sh
+
+# Or run specific build steps
+./build.sh test      # Run tests only
+./build.sh lint      # Run linting only
+./build.sh validate  # Validate manifest and compliance
+./build.sh security  # Run security audit
+./build.sh pack      # Build DXT package only
+```
+
+### Manual Build Steps
+
+1. **Environment Validation**
+   ```bash
+   # Verify Node.js version
+   node --version  # Should be >= 18.0.0
+   
+   # Check required environment variables
+   npm run env:check
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   # Clean install
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
+
+3. **Code Quality Checks**
+   ```bash
+   # Run linting
+   npm run lint
+   
+   # Fix linting issues
+   npm run lint:fix
+   ```
+
+4. **Testing**
+   ```bash
+   # Run all tests
+   npm test
+   
+   # Run specific test suites
+   npm run test:unit
+   npm run test:integration
+   npm run test:compliance
+   ```
+
+5. **Security Audit**
+   ```bash
+   # Check for vulnerabilities
+   npm audit
+   
+   # Fix vulnerabilities
+   npm audit fix
+   ```
+
+6. **FHIR Compliance Validation**
+   ```bash
+   # Validate FHIR R4 compliance
+   npm run validate:fhir
+   ```
+
+7. **Build DXT Package**
+   ```bash
+   # Validate manifest
+   dxt validate
+   
+   # Pack extension
+   dxt pack
+   ```
+
+## Testing Strategy
+
+### Unit Tests
+- FHIR resource validation
+- Clinical terminology lookup
+- PHI encryption/decryption
+- Bilingual content translation
+- Role-based access control
+
+### Integration Tests
+- MCP server functionality
+- Tool call handling
+- Prompt processing
+- Error handling
+
+### Compliance Tests
+- HIPAA audit logging
+- NPHIES interoperability
+- Role-based access validation
+- Security requirements
+
+### Performance Tests
+- Concurrent request handling
+- Large dataset processing
+- Memory usage optimization
+- Response time benchmarks
+
+## Deployment Options
+
+### 1. Direct Installation (Development)
+
+```bash
+# Build the DXT package
+npm run dxt:pack
+
+# Install in Claude Desktop
+# Drag the .dxt file to Claude Desktop Settings > Extensions
+```
+
+### 2. Enterprise Deployment
+
+#### Group Policy (Windows)
+```powershell
+# Create registry entries for enterprise deployment
+reg add "HKLM\SOFTWARE\Policies\Anthropic\Claude\Extensions" /v "AllowedExtensions" /t REG_MULTI_SZ /d "brainsait-healthcare-mcp"
+
+# Deploy extension to shared location
+copy "brainsait-healthcare-mcp.dxt" "\\server\shared\claude-extensions\"
+```
+
+#### MDM (macOS)
+```xml
+<!-- Configuration profile for macOS deployment -->
+<key>com.anthropic.claude.extensions</key>
+<dict>
+    <key>AllowedExtensions</key>
+    <array>
+        <string>brainsait-healthcare-mcp</string>
+    </array>
+    <key>PreInstalledExtensions</key>
+    <array>
+        <string>/Library/Application Support/Claude/Extensions/brainsait-healthcare-mcp.dxt</string>
+    </array>
+</dict>
+```
+
+### 3. Extension Directory Submission
+
+#### Prerequisites for Submission
+1. **Code Quality**
+   - All tests passing
+   - Code coverage > 80%
+   - No security vulnerabilities
+   - ESLint compliance
+
+2. **Documentation**
+   - Complete README.md
+   - API documentation
+   - Configuration guide
+   - Troubleshooting guide
+
+3. **Compliance Validation**
+   - HIPAA audit requirements met
+   - NPHIES standards compliance
+   - Security assessment completed
+
+#### Submission Process
+```bash
+# Validate submission requirements
+npm run validate:submission
+
+# Generate submission package
+npm run build:submission
+
+# Submit via Google Form
+# https://docs.google.com/forms/d/14_Dmcig4z8NeRMB_e7TOyrKzuZ88-BLYdLvS6LPhiZU/edit
+```
+
+## Configuration Management
+
+### User Configuration Options
+
+The extension provides the following user-configurable options:
+
+1. **FHIR Server Settings**
+   - Base URL
+   - Authentication credentials
+   - Version compatibility
+
+2. **Security Configuration**
+   - Encryption keys
+   - Audit endpoints
+   - Compliance levels
+
+3. **Localization Settings**
+   - Default language (Arabic/English)
+   - Clinical specialty focus
+   - Regional compliance (NPHIES)
+
+4. **Performance Tuning**
+   - Request timeouts
+   - Batch sizes
+   - Cache settings
+
+### Runtime Configuration
+
+```javascript
+// Example configuration validation
+const config = {
+  fhir: {
+    baseUrl: process.env.FHIR_BASE_URL,
+    version: '4.0.1',
+    timeout: 30000
+  },
+  security: {
+    encryptionKey: process.env.ENCRYPTION_KEY,
+    auditEndpoint: process.env.AUDIT_LOG_ENDPOINT,
+    complianceLevel: process.env.COMPLIANCE_LEVEL?.split(',') || ['HIPAA']
+  },
+  localization: {
+    defaultLanguage: process.env.DEFAULT_LANGUAGE || 'ar',
+    supportedLanguages: process.env.SUPPORTED_LANGUAGES?.split(',') || ['ar', 'en']
+  }
+};
+```
+
+## Monitoring and Maintenance
+
+### Health Checks
+
+```bash
+# Check extension health
+curl -X POST http://localhost:3000/health \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/list"}'
+```
+
+### Log Monitoring
+
+```bash
+# Monitor audit logs
+tail -f /var/log/brainsait/audit.log
+
+# Monitor application logs
+tail -f /var/log/brainsait/application.log
+
+# Monitor performance metrics
+curl http://localhost:3000/metrics
+```
+
+### Update Process
+
+```bash
+# Check for updates
+npm run check:updates
+
+# Download and install updates
+npm run update:extension
+
+# Restart services
+npm run restart
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Extension Won't Load**
+   - Check Node.js version compatibility
+   - Verify environment variables
+   - Review manifest.json syntax
+
+2. **FHIR Validation Errors**
+   - Confirm FHIR server connectivity
+   - Check resource structure
+   - Validate clinical terminology
+
+3. **Audit Logging Failures**
+   - Verify audit endpoint accessibility
+   - Check authentication credentials
+   - Review network connectivity
+
+4. **Performance Issues**
+   - Monitor memory usage
+   - Check database connections
+   - Review concurrent request limits
+
+### Debug Mode
+
+```bash
+# Enable debug logging
+export DEBUG_MODE=true
+export LOG_LEVEL=debug
+
+# Run with verbose output
+npm run dev -- --verbose
+
+# Check detailed logs
+tail -f logs/debug.log
+```
+
+## Security Considerations
+
+### Data Protection
+- All PHI data encrypted with AES-256
+- Secure credential storage in OS keychain
+- Network traffic encrypted with TLS 1.3
+
+### Access Control
+- Role-based permissions
+- Multi-factor authentication support
+- Session management
+
+### Compliance Monitoring
+- Real-time audit logging
+- Compliance dashboard
+- Automated security scans
+
+## Support and Documentation
+
+### Resources
+- **Documentation**: https://docs.brainsait.com/mcp-extensions
+- **Support Portal**: https://support.brainsait.com
+- **Developer Forum**: https://community.brainsait.com
+- **GitHub Repository**: https://github.com/brainsait/healthcare-mcp-extension
+
+### Contact Information
+- **Technical Support**: tech-support@brainsait.com
+- **Compliance Questions**: compliance@brainsait.com
+- **Security Issues**: security@brainsait.com
+
+---
+
+**Note**: This extension is designed for healthcare environments and requires proper configuration of compliance settings. Always test in a development environment before deploying to production systems handling real patient data.

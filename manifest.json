@@ -1,0 +1,168 @@
+{
+  "dxt_version": "0.1",
+  "name": "brainsait-healthcare-mcp",
+  "display_name": "BrainSAIT Healthcare MCP Extension",
+  "version": "1.0.0",
+  "description": "HIPAA/NPHIES compliant healthcare MCP extension with FHIR R4 support, clinical decision support, and bilingual Arabic/English capabilities",
+  "long_description": "Comprehensive healthcare MCP extension for BrainSAIT platform providing FHIR R4 resource management, clinical terminology validation (ICD-10, CPT, LOINC), audit logging, and bilingual Arabic/English support. Designed for Saudi healthcare interoperability with NPHIES compliance.",
+  "author": {
+    "name": "BrainSAIT Development Team",
+    "email": "dev@brainsait.com",
+    "url": "https://brainsait.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brainsait/healthcare-mcp-extension"
+  },
+  "homepage": "https://brainsait.com/mcp-extensions",
+  "documentation": "https://docs.brainsait.com/mcp-healthcare-extension",
+  "support": "https://support.brainsait.com",
+  "icon": "assets/brainsait-icon.png",
+  "screenshots": [
+    "assets/screenshots/fhir-validation.png",
+    "assets/screenshots/bilingual-ui.png",
+    "assets/screenshots/audit-dashboard.png"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "FHIR_BASE_URL": "${user_config.fhir_base_url}",
+        "ENCRYPTION_KEY": "${user_config.encryption_key}",
+        "AUDIT_LOG_ENDPOINT": "${user_config.audit_log_endpoint}",
+        "NPHIES_ENDPOINT": "${user_config.nphies_endpoint}",
+        "DEFAULT_LANGUAGE": "${user_config.default_language}",
+        "COMPLIANCE_LEVEL": "${user_config.compliance_level}",
+        "PYTHONPATH": "${__dirname}/server/lib"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "validate_fhir_resource",
+      "description": "Validate FHIR R4 resources for compliance and clinical accuracy"
+    },
+    {
+      "name": "clinical_terminology_lookup",
+      "description": "Look up ICD-10, CPT, LOINC codes with Arabic/English translations"
+    },
+    {
+      "name": "audit_log_query",
+      "description": "Query audit logs for compliance reporting and security monitoring"
+    },
+    {
+      "name": "nphies_interoperability_check",
+      "description": "Validate resources for NPHIES Saudi interoperability standards"
+    },
+    {
+      "name": "clinical_decision_support",
+      "description": "Provide clinical decision support based on patient data and guidelines"
+    },
+    {
+      "name": "bilingual_content_translate",
+      "description": "Translate medical content between Arabic and English with clinical accuracy"
+    },
+    {
+      "name": "phi_encryption_handler",
+      "description": "Encrypt/decrypt PHI data with HIPAA-compliant methods"
+    },
+    {
+      "name": "role_based_access_control",
+      "description": "Validate user permissions and roles for healthcare data access"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "clinical_assessment",
+      "description": "Generate clinical assessments based on patient data",
+      "arguments": ["patient_data", "assessment_type", "language"],
+      "text": "Based on the following patient data: ${arguments.patient_data}, generate a ${arguments.assessment_type} clinical assessment in ${arguments.language} language. Ensure FHIR R4 compliance and include relevant ICD-10/CPT codes."
+    },
+    {
+      "name": "fhir_resource_generator",
+      "description": "Generate FHIR R4 resources from clinical data",
+      "arguments": ["clinical_data", "resource_type", "compliance_level"],
+      "text": "Generate a FHIR R4 ${arguments.resource_type} resource from the following clinical data: ${arguments.clinical_data}. Ensure ${arguments.compliance_level} compliance level with proper validation and audit trail."
+    },
+    {
+      "name": "compliance_report",
+      "description": "Generate compliance reports for audit purposes",
+      "arguments": ["audit_period", "compliance_framework", "language"],
+      "text": "Generate a comprehensive compliance report for ${arguments.audit_period} following ${arguments.compliance_framework} standards in ${arguments.language}. Include audit trails, access logs, and security metrics."
+    }
+  ],
+  "tools_generated": true,
+  "prompts_generated": true,
+  "keywords": ["healthcare", "fhir", "hipaa", "nphies", "clinical", "bilingual", "arabic", "compliance", "audit"],
+  "license": "MIT",
+  "compatibility": {
+    "claude_desktop": ">=1.0.0",
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=18.0.0",
+      "python": ">=3.9"
+    }
+  },
+  "user_config": {
+    "fhir_base_url": {
+      "type": "string",
+      "title": "FHIR Server Base URL",
+      "description": "Base URL for your FHIR R4 server endpoint",
+      "default": "https://fhir.brainsait.com/r4",
+      "required": true
+    },
+    "encryption_key": {
+      "type": "string",
+      "title": "PHI Encryption Key",
+      "description": "AES-256 encryption key for PHI data protection (HIPAA compliance)",
+      "sensitive": true,
+      "required": true
+    },
+    "audit_log_endpoint": {
+      "type": "string",
+      "title": "Audit Log Endpoint",
+      "description": "Endpoint for sending compliance audit logs",
+      "default": "https://audit.brainsait.com/api/v1/logs",
+      "required": true
+    },
+    "nphies_endpoint": {
+      "type": "string",
+      "title": "NPHIES Integration Endpoint",
+      "description": "Saudi NPHIES interoperability service endpoint",
+      "default": "https://nphies.sa.gov/api/v1",
+      "required": false
+    },
+    "default_language": {
+      "type": "string",
+      "title": "Default Language",
+      "description": "Default language for clinical content (ar for Arabic, en for English)",
+      "default": "ar",
+      "required": true
+    },
+    "compliance_level": {
+      "type": "string",
+      "title": "Compliance Level",
+      "description": "Required compliance level (HIPAA, NPHIES, GDPR)",
+      "default": "HIPAA,NPHIES",
+      "required": true
+    },
+    "clinical_specialties": {
+      "type": "string",
+      "title": "Clinical Specialties",
+      "description": "Comma-separated list of clinical specialties (Radiology, Laboratory, Cardiology, etc.)",
+      "default": "Radiology,Laboratory,Internal Medicine",
+      "required": false
+    },
+    "max_audit_retention_days": {
+      "type": "number",
+      "title": "Audit Log Retention (Days)",
+      "description": "Number of days to retain audit logs for compliance",
+      "default": 2555,
+      "min": 365,
+      "max": 3650
+    }
+  }
+}

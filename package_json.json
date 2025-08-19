@@ -1,0 +1,69 @@
+{
+  "name": "brainsait-healthcare-mcp",
+  "version": "1.0.0",
+  "description": "HIPAA/NPHIES compliant healthcare MCP extension with FHIR R4 support",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest --testPathPattern=tests/unit",
+    "test:integration": "jest --testPathPattern=tests/integration",
+    "test:compliance": "jest --testPathPattern=tests/compliance",
+    "lint": "eslint server/ --ext .js",
+    "lint:fix": "eslint server/ --ext .js --fix",
+    "build": "npm run lint && npm run test",
+    "dxt:init": "dxt init",
+    "dxt:pack": "dxt pack",
+    "dxt:validate": "dxt validate"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.1.0",
+    "axios": "^1.6.0",
+    "crypto": "^1.0.1",
+    "fhir": "^4.11.1",
+    "node-fetch": "^3.3.2",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@anthropic-ai/dxt": "^0.1.0",
+    "@types/jest": "^29.5.8",
+    "@types/node": "^20.9.0",
+    "eslint": "^8.54.0",
+    "eslint-config-standard": "^17.1.0",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "healthcare",
+    "fhir",
+    "hipaa",
+    "nphies",
+    "clinical",
+    "bilingual",
+    "arabic",
+    "compliance",
+    "audit",
+    "brainsait"
+  ],
+  "author": {
+    "name": "BrainSAIT Development Team",
+    "email": "dev@brainsait.com",
+    "url": "https://brainsait.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brainsait/healthcare-mcp-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brainsait/healthcare-mcp-extension/issues"
+  },
+  "homepage": "https://brainsait.com/mcp-extensions"
+}
