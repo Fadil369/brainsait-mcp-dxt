@@ -27,7 +27,7 @@ const WebConnectorsDemo = () => {
       name: 'EHR System',
       icon: Database,
       description: 'Electronic Health Records integration with Epic, Cerner, and Allscripts',
-      endpoint: 'https://api.ehr-demo.brainsait.com',
+      endpoint: 'https://api.ehr-demo.brainsait.io',
       color: 'from-emerald-500 to-teal-600',
       features: ['Patient Records', 'Appointment Scheduling', 'Clinical Notes', 'Medication History'],
       demoCode: `// EHR Patient Data Retrieval
@@ -45,7 +45,7 @@ console.log(patientData.demographics);
       name: 'FHIR R4 Server',
       icon: Activity,
       description: 'Fast Healthcare Interoperability Resources standard compliance',
-      endpoint: 'https://api.fhir-demo.brainsait.com',
+      endpoint: 'https://api.fhir-demo.brainsait.io',
       color: 'from-blue-500 to-indigo-600',
       features: ['Resource Bundles', 'SMART on FHIR', 'CDS Hooks', 'Bulk Data Export'],
       demoCode: `// FHIR Resource Query
@@ -64,7 +64,7 @@ console.log(\`Found \${bundle.total} patients\`);`
       name: 'Laboratory System',
       icon: Microscope,
       description: 'Laboratory Information System for test results and analysis',
-      endpoint: 'https://api.lis-demo.brainsait.com',
+      endpoint: 'https://api.lis-demo.brainsait.io',
       color: 'from-purple-500 to-violet-600',
       features: ['Lab Results', 'Test Orders', 'Quality Control', 'Reference Ranges'],
       demoCode: `// Lab Results Query
@@ -82,7 +82,7 @@ console.log(labResults.criticalValues);
       name: 'Radiology System',
       icon: Scan,
       description: 'Radiology Information System for imaging studies and reports',
-      endpoint: 'https://api.ris-demo.brainsait.com',
+      endpoint: 'https://api.ris-demo.brainsait.io',
       color: 'from-orange-500 to-red-600',
       features: ['DICOM Images', 'Study Reports', 'Modality Worklist', 'PACS Integration'],
       demoCode: `// Radiology Study Search
@@ -100,7 +100,7 @@ console.log(studies[0].findings);
       name: 'Pharmacy System',
       icon: FileText,
       description: 'Pharmacy Information System for medication management',
-      endpoint: 'https://api.pis-demo.brainsait.com',
+      endpoint: 'https://api.pis-demo.brainsait.io',
       color: 'from-pink-500 to-rose-600',
       features: ['Prescription Management', 'Drug Interactions', 'Inventory Control', 'Dosage Calculations'],
       demoCode: `// Medication History
@@ -118,7 +118,7 @@ medications.forEach(med => {
       name: 'Health Information Exchange',
       icon: Globe,
       description: 'HIE for seamless data sharing across healthcare organizations',
-      endpoint: 'https://api.hie-demo.brainsait.com',
+      endpoint: 'https://api.hie-demo.brainsait.io',
       color: 'from-cyan-500 to-blue-600',
       features: ['Cross-Platform Data', 'Care Coordination', 'Provider Networks', 'Patient Consent'],
       demoCode: `// HIE Data Exchange
@@ -135,7 +135,7 @@ console.log(exchangeData.summary);`
       name: 'Audit System',
       icon: Shield,
       description: 'Comprehensive audit logging for compliance and security monitoring',
-      endpoint: 'https://api.audit-demo.brainsait.com',
+      endpoint: 'https://api.audit-demo.brainsait.io',
       color: 'from-yellow-500 to-amber-600',
       features: ['Access Logging', 'Compliance Reports', 'Security Events', 'Risk Assessment'],
       demoCode: `// Audit Log Query

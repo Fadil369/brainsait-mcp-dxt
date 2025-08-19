@@ -119,8 +119,8 @@ const ContactSection = () => {
       icon: Mail,
       title: 'Email Support',
       description: 'Get in touch with our healthcare specialists',
-      contact: 'healthcare@brainsait.com',
-      action: 'mailto:healthcare@brainsait.com'
+      contact: 'healthcare@brainsait.io',
+      action: 'mailto:healthcare@brainsait.io'
     },
     {
       icon: Phone,
