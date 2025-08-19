@@ -190,7 +190,14 @@ class HealthcareValidationSuite {
       }]
     };
     
-    const hasSaudiProfile = saudiPatient.meta.profile.includes('http://nphies.sa/fhir/StructureDefinition/Saudi-Patient');
+    const hasSaudiProfile = saudiPatient.meta.profile.some(profileUrl => {
+      try {
+        const urlObj = new URL(profileUrl);
+        return urlObj.host === 'nphies.sa' && urlObj.pathname === '/fhir/StructureDefinition/Saudi-Patient';
+      } catch (e) {
+        return false;
+      }
+    });
     this.addTest('nphiesCompliance', 'Saudi Patient Profile Support', hasSaudiProfile);
     
     // Test 2: Arabic Language Support
