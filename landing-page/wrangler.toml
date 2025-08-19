@@ -10,7 +10,7 @@ pages_build_output_dir = "dist"
 [env.production.vars]
 ENVIRONMENT = "production"
 
-[env.staging] 
-# Staging environment variables
-[env.staging.vars]
-ENVIRONMENT = "staging"
+[env.preview] 
+# Preview environment variables
+[env.preview.vars]
+ENVIRONMENT = "preview"
