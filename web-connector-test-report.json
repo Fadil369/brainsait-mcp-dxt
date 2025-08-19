@@ -1,0 +1,89 @@
+{
+  "timestamp": "2025-08-19T06:38:47.033Z",
+  "totalTests": 12,
+  "passedTests": 1,
+  "successRate": 8.33,
+  "results": [
+    {
+      "test": "MCP Server Startup",
+      "passed": true
+    },
+    {
+      "test": "web_connector_register",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "web_connector_list",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "web_connector_status",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "web_connector_templates",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "web_connector_execute",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "web_connector_unregister",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "validate_fhir_resource",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "clinical_terminology_lookup",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "phi_encryption_handler",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "role_based_access_control",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    },
+    {
+      "test": "bilingual_content_translate",
+      "response": {
+        "code": -32601,
+        "message": "Method not found"
+      }
+    }
+  ]
+}

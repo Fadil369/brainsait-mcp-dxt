@@ -503,6 +503,9 @@ class BrainSAITMCPServer {
   async validateFHIRResource (args) {
     const { resource, resourceType, userId } = args;
 
+    // MEDICAL: Log access for audit compliance
+    await this.auditLogger.logAccess(userId, 'VALIDATE_FHIR', resourceType, resource.id);
+
     try {
       // MEDICAL: Validate FHIR structure
       FHIRValidator.validateResource(resource, resourceType);
@@ -555,6 +558,9 @@ class BrainSAITMCPServer {
   // MEDICAL: Clinical terminology lookup with bilingual support
   async clinicalTerminologyLookup (args) {
     const { code, system, language = this.defaultLanguage, userId } = args;
+
+    // MEDICAL: Log access for audit compliance
+    await this.auditLogger.logAccess(userId, 'LOOKUP_TERMINOLOGY', 'TerminologyCode', code);
 
     try {
       FHIRValidator.validateClinicalTerminology(code, system);
@@ -1156,6 +1162,17 @@ class BrainSAITMCPServer {
     console.error('Enhanced Features: Remote healthcare system integration, EHR/FHIR/Audit connectors');
   }
 }
+
+// Export classes for testing
+export {
+  FHIRValidator,
+  AuditLogger,
+  PHIEncryption,
+  BilingualContent,
+  BrainSAITMCPServer,
+  ComplianceError,
+  HealthcareAPIError
+};
 
 // Start the server
 const server = new BrainSAITMCPServer();

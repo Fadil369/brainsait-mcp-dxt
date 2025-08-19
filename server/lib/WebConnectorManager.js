@@ -240,7 +240,9 @@ export class WebConnectorManager extends EventEmitter {
 
     // Validate endpoint URL
     try {
-      new URL(config.endpoint);
+      const url = new URL(config.endpoint);
+      // URL validation successful if no error thrown
+      console.debug('URL validation passed for:', url.hostname);
     } catch {
       throw new WebConnectorError('Invalid endpoint URL');
     }

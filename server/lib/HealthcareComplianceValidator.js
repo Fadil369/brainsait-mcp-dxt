@@ -7,8 +7,6 @@
  * @license MIT
  */
 
-import crypto from 'crypto';
-
 /**
  * Healthcare Compliance Error
  */
