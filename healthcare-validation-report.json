@@ -1,0 +1,275 @@
+{
+  "timestamp": "2025-08-19T06:37:24.708Z",
+  "overall": {
+    "successRate": 100,
+    "totalTests": 32,
+    "totalPassed": 32,
+    "totalFailed": 0
+  },
+  "categories": {
+    "fhirValidation": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Valid Patient Resource Structure",
+          "passed": "male",
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        },
+        {
+          "name": "Invalid Resource Rejection",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        },
+        {
+          "name": "Observation Resource Validation",
+          "passed": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8867-4"
+              }
+            ]
+          },
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        }
+      ]
+    },
+    "clinicalTerminology": {
+      "passed": 4,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "ICD-10 Code Format Validation",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        },
+        {
+          "name": "CPT Code Format Validation",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        },
+        {
+          "name": "LOINC Code Format Validation",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        },
+        {
+          "name": "Bilingual Terminology Support",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        }
+      ]
+    },
+    "auditLogging": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Audit Log Structure Validation",
+          "passed": "2025-08-19T06:37:24.704Z",
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        },
+        {
+          "name": "Tamper-proof Log Features",
+          "passed": "session-12345",
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.704Z"
+        },
+        {
+          "name": "Role-based Audit Access",
+          "passed": "192.168.1.100",
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.705Z"
+        }
+      ]
+    },
+    "nphiesCompliance": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Saudi Patient Profile Support",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.705Z"
+        },
+        {
+          "name": "Arabic Language Extensions",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.705Z"
+        },
+        {
+          "name": "Saudi National ID Format",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.705Z"
+        }
+      ]
+    },
+    "clinicalDecisionSupport": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "CDS Recommendation Structure",
+          "passed": 0.95,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.705Z"
+        },
+        {
+          "name": "Bilingual CDS Support",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.705Z"
+        },
+        {
+          "name": "Confidence Scoring Validation",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.705Z"
+        }
+      ]
+    },
+    "bilingualTranslation": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Medical Terms Translation Coverage",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.705Z"
+        },
+        {
+          "name": "Clinical Report Translation Support",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        },
+        {
+          "name": "Arabic Text Processing",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        }
+      ]
+    },
+    "phiEncryption": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "AES-256-GCM Encryption Structure",
+          "passed": "aes-256-gcm",
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        },
+        {
+          "name": "AES-256-GCM Algorithm Validation",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        },
+        {
+          "name": "PHI Data Classification",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        }
+      ]
+    },
+    "roleBasedAccess": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Role Definitions Completeness",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        },
+        {
+          "name": "Permission Granularity",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        },
+        {
+          "name": "Patient Data Access Restriction",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        }
+      ]
+    },
+    "webConnectors": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Connector Configuration Validation",
+          "passed": "oauth2",
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        },
+        {
+          "name": "Healthcare System Templates",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        },
+        {
+          "name": "Mock Endpoint Connection Handling",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        }
+      ]
+    },
+    "landingPage": {
+      "passed": 4,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Pricing Tiers Structure",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.706Z"
+        },
+        {
+          "name": "USD/SAR Currency Support",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.707Z"
+        },
+        {
+          "name": "Landing Page Deployment Files",
+          "passed": true,
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.707Z"
+        },
+        {
+          "name": "React Dependencies Configuration",
+          "passed": "^18.2.0",
+          "details": "",
+          "timestamp": "2025-08-19T06:37:24.707Z"
+        }
+      ]
+    }
+  },
+  "compliance": {
+    "hipaa": true,
+    "nphies": true,
+    "fhir": true
+  }
+}

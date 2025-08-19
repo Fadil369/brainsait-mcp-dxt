@@ -237,7 +237,9 @@ export class ConnectorConfigManager {
 
     // Validate endpoint URL
     try {
-      new URL(config.endpoint);
+      const url = new URL(config.endpoint);
+      // URL validation successful if no error thrown
+      console.debug('URL validation passed for:', url.hostname);
     } catch {
       throw new Error('Invalid endpoint URL format');
     }
@@ -357,8 +359,8 @@ export class ConfigTemplateGenerator {
 
         authentication: {
           type: 'oauth2',
-          clientId: baseConfig.clientId || '${EHR_CLIENT_ID}',
-          clientSecret: baseConfig.clientSecret || '${EHR_CLIENT_SECRET}',
+          clientId: baseConfig.clientId || 'EHR_CLIENT_ID_PLACEHOLDER',
+          clientSecret: baseConfig.clientSecret || 'EHR_CLIENT_SECRET_PLACEHOLDER',
           tokenUrl: baseConfig.tokenUrl || 'https://ehr.example.com/oauth/token',
           scope: 'patient.read patient.write encounter.read encounter.write'
         },
@@ -402,8 +404,8 @@ export class ConfigTemplateGenerator {
 
         authentication: {
           type: 'bearer',
-          token: baseConfig.token || '${FHIR_ACCESS_TOKEN}',
-          refreshToken: baseConfig.refreshToken || '${FHIR_REFRESH_TOKEN}',
+          token: baseConfig.token || 'FHIR_ACCESS_TOKEN_PLACEHOLDER',
+          refreshToken: baseConfig.refreshToken || 'FHIR_REFRESH_TOKEN_PLACEHOLDER',
           tokenUrl: baseConfig.tokenUrl || 'https://fhir.example.com/oauth/token'
         },
 
@@ -447,7 +449,7 @@ export class ConfigTemplateGenerator {
 
         authentication: {
           type: 'apikey',
-          key: baseConfig.apiKey || '${AUDIT_API_KEY}',
+          key: baseConfig.apiKey || 'AUDIT_API_KEY_PLACEHOLDER',
           header: 'X-API-Key'
         },
 
