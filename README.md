@@ -40,6 +40,29 @@ A comprehensive **HIPAA/NPHIES compliant** Model Context Protocol (MCP) extensio
 - **npm** latest version
 - **Claude Desktop** (for extension installation)
 
+## ⚠️ CRITICAL REQUIREMENTS
+
+**This extension requires specific environment variables to function correctly.**
+
+### 🚨 Required Environment Variables
+
+The following environment variables are **MANDATORY** for proper operation:
+
+| Variable | Required | Purpose | Example |
+|----------|----------|---------|---------|
+| `ENCRYPTION_KEY` | ✅ **YES** | PHI data encryption (AES-256) | 32+ character string |
+| `AUDIT_LOG_ENDPOINT` | ✅ **YES** | HIPAA compliance logging | `https://audit.brainsait.io/api/v1/logs` |
+| `FHIR_BASE_URL` | ✅ **YES** | Healthcare data validation | `https://fhir.brainsait.io/r4` |
+| `COMPLIANCE_LEVEL` | ✅ **YES** | Compliance framework | `HIPAA,NPHIES` |
+
+### ⚡ Quick Validation
+
+Before using the extension, run the requirements validator:
+
+```bash
+npm run validate:requirements
+```
+
 ### Installation
 
 1. **Clone the repository**
@@ -53,19 +76,26 @@ A comprehensive **HIPAA/NPHIES compliant** Model Context Protocol (MCP) extensio
    npm install
    ```
 
-3. **Configure environment**
+3. **Configure environment (CRITICAL)**
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
+   # IMPORTANT: Set all REQUIRED variables before proceeding
    ```
 
-4. **Build the extension**
+4. **Validate requirements**
+   ```bash
+   npm run validate:requirements
+   # Must pass before extension will work
+   ```
+
+5. **Build the extension**
    ```bash
    npm run build
    npm run dxt:pack
    ```
 
-5. **Install in Claude Desktop**
+6. **Install in Claude Desktop**
    - Drag the generated `.dxt` file to Claude Desktop Settings > Extensions
 
 ## 📋 Configuration

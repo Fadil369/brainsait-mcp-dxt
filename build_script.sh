@@ -11,6 +11,15 @@ echo "=================================================="
 # Function to check required environment variables
 check_env_vars() {
     echo "📋 Checking environment variables..."
+    
+    # Validate critical requirements
+    echo "🔍 Validating healthcare extension requirements..."
+    if npm run validate:requirements; then
+        echo "✅ All critical requirements validated"
+    else
+        echo "❌ Requirements validation failed - extension may not work correctly"
+        echo "Run 'npm run validate:requirements' to see specific issues"
+    fi
     required_vars=(
         "FHIR_BASE_URL"
         "ENCRYPTION_KEY"

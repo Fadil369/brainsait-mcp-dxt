@@ -14,6 +14,7 @@
     "lint": "eslint server/ --ext .js",
     "lint:fix": "eslint server/ --ext .js --fix",
     "build": "npm run lint && npm run test",
+    "validate:requirements": "node validate-requirements.js",
     "dxt:init": "dxt init",
     "dxt:pack": "dxt pack",
     "dxt:validate": "dxt validate"
@@ -21,6 +22,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.3",
     "axios": "^1.6.0",
+    "chalk": "^5.6.0",
     "fhir": "^4.11.1",
     "node-fetch": "^3.3.2",
     "uuid": "^9.0.1",
