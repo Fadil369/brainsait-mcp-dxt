@@ -116,8 +116,8 @@ landing-page/
 ## 🌐 Deployment Configuration
 
 ### Cloudflare Workers
-- **Production**: mcp.brainsait.com
-- **Staging**: mcp-staging.brainsait.com
+- **Production**: mcp.brainsait.io
+- **Staging**: mcp-staging.brainsait.io
 - **Compatibility Date**: 2024-01-01
 - **Security Headers**: CSP, HSTS, X-Frame-Options
 
@@ -200,7 +200,7 @@ ENVIRONMENT=staging
 ## 📞 Support
 
 For technical support or deployment issues:
-- **Email**: dev@brainsait.com
+- **Email**: dev@brainsait.io
 - **Documentation**: Internal deployment guides
 - **Monitoring**: Cloudflare Analytics dashboard
 

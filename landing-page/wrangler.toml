@@ -1,4 +1,4 @@
-# Cloudflare Pages Configuration
+# Cloudflare Pages Configuration for BrainSAIT.io
 name = "brainsait-mcp-landing"
 compatibility_date = "2024-01-01"
 
@@ -9,8 +9,17 @@ pages_build_output_dir = "dist"
 # Production environment variables
 [env.production.vars]
 ENVIRONMENT = "production"
+DOMAIN = "brainsait.io"
 
 [env.preview] 
-# Preview environment variables
+# Preview environment variables  
 [env.preview.vars]
 ENVIRONMENT = "preview"
+DOMAIN = "brainsait.io"
+
+# Custom domains will be configured via Cloudflare dashboard:
+# - mcp.brainsait.io (primary)
+# - hospital.brainsait.io 
+# - api.brainsait.io
+# - docs.brainsait.io
+# - support.brainsait.io
