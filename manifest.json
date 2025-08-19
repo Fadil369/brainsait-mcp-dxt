@@ -12,11 +12,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/brainsait/healthcare-mcp-extension"
+    "url": "https://github.com/Fadil369/brainsait-mcp-dxt"
   },
-  "homepage": "https://brainsait.com/mcp-extensions",
-  "documentation": "https://docs.brainsait.com/mcp-healthcare-extension",
-  "support": "https://support.brainsait.com",
+  "homepage": "https://github.com/Fadil369/brainsait-mcp-dxt",
+  "documentation": "https://github.com/Fadil369/brainsait-mcp-dxt/blob/main/README.md",
+  "support": "https://github.com/Fadil369/brainsait-mcp-dxt/issues",
   "icon": "assets/brainsait-icon.png",
   "screenshots": [
     "assets/screenshots/fhir-validation.png",

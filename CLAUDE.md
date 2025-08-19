@@ -101,8 +101,13 @@ deployment_guide.txt - Production deployment instructions
 - All tool calls must include `userId` for audit logging
 - Bilingual content should support Arabic/English translation
 
+## Repository Information
+- **GitHub Repository**: https://github.com/Fadil369/brainsait-mcp-dxt
+- **Issues**: https://github.com/Fadil369/brainsait-mcp-dxt/issues
+- **Documentation**: https://github.com/Fadil369/brainsait-mcp-dxt/blob/main/README.md
+
 ## Integration with OID Portal System
-This MCP extension integrates with the BrainSAIT OID portal system at `/Users/fadil369/02_BRAINSAIT_ECOSYSTEM/Unified_Platform/UNIFICATION_SYSTEM/brainSAIT-oid-system/oid-portal/src/pages/OidTree.jsx`. When working on healthcare features, ensure compatibility with the existing OID tree visualization and data structure.
+This MCP extension integrates with the BrainSAIT OID portal system. When working on healthcare features, ensure compatibility with the existing OID tree visualization and data structure.
 
 ## Special Considerations
 - This is a healthcare-focused codebase requiring HIPAA compliance

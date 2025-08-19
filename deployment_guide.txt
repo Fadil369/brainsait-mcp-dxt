@@ -93,8 +93,8 @@ DEBUG_MODE=false
 
 ```bash
 # Clone the repository
-git clone https://github.com/brainsait/healthcare-mcp-extension.git
-cd brainsait-healthcare-mcp-extension
+git clone https://github.com/Fadil369/brainsait-mcp-dxt.git
+cd brainsait-mcp-dxt
 
 # Install dependencies
 npm install
@@ -439,7 +439,7 @@ tail -f logs/debug.log
 - **Documentation**: https://docs.brainsait.com/mcp-extensions
 - **Support Portal**: https://support.brainsait.com
 - **Developer Forum**: https://community.brainsait.com
-- **GitHub Repository**: https://github.com/brainsait/healthcare-mcp-extension
+- **GitHub Repository**: https://github.com/Fadil369/brainsait-mcp-dxt
 
 ### Contact Information
 - **Technical Support**: tech-support@brainsait.com

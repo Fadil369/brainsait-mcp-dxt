@@ -329,7 +329,7 @@ main() {
     echo ""
     echo "Next steps:"
     echo "1. Test the .dxt file with Claude Desktop"
-    echo "2. Submit for review: https://docs.google.com/forms/d/14_Dmcig4z8NeRMB_e7TOyrKzuZ88-BLYdLvS6LPhiZU/edit"
+    echo "2. Submit for review: https://github.com/Fadil369/brainsait-mcp-dxt"
     echo "3. Deploy to production environment"
     echo ""
     echo "BrainSAIT Healthcare MCP Extension ready for deployment! 🏥"
