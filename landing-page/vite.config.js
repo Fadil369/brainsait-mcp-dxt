@@ -6,18 +6,18 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: 'terser',
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          animations: ['framer-motion', '@paper-design/shaders-react']
+          animations: ['framer-motion']
         }
       }
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'framer-motion', '@paper-design/shaders-react']
+    include: ['react', 'react-dom', 'framer-motion']
   },
   server: {
     port: 3000,
